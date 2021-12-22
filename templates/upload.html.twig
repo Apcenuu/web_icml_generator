@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_end(form) }}
+
+    {% if icml_file is defined %}
+        <a href="{{ app.request.getBaseURL() }}/{{ icml_file }}">ICML</a>
+        {{ icml_file }}
+    {% endif %}
+{% endblock %}
