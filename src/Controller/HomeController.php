@@ -24,14 +24,14 @@ class HomeController extends AbstractController
             $safeFilename = $slugger->slug($originalFilename);
             $newFilename = $safeFilename.'-'.uniqid().'.'.$uploadedFile->guessExtension();
             $uploadedFile->move(
-                '../../PrestaShop176/xlsx',
+                '../public/xlsx',
                 $newFilename
             );
 
             $excelService = new ExcelService();
             $categoryService = new CategoryService();
             $icmlService = new IcmlService($excelService, $categoryService);
-            $icmlName = $icmlService->generateIcml('../../PrestaShop176/xlsx/'. $newFilename);
+            $icmlName = $icmlService->generateIcml('../public/xlsx/'. $newFilename);
 
             return $this->render('upload.html.twig', [
                 'form' => $form->createView(),

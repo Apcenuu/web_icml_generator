@@ -56,6 +56,7 @@ class IcmlService
 //                'color' => ucfirst($this->getValueFromRow($row,7)),
 //                'size' => $this->getValueFromRow($row,8),
 //                'vendor' => ucfirst($this->getValueFromRow($row, 3)),
+                'picture' => $this->getValueFromRow($row,6)
             ];
 
             $offers[] = $offer;
@@ -64,7 +65,7 @@ class IcmlService
 
         $resultFile = $this->resultFile();
 
-        $icml = new RetailcrmIcml('MerKomuna', '../../PrestaShop176/xml/' . $resultFile);
+        $icml = new RetailcrmIcml('MerKomuna', 'xml/' . $resultFile);
         $icml->generate($categories, $offers);
 
         return $resultFile;
