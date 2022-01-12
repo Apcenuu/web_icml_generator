@@ -4,7 +4,7 @@
     {{ form_end(form) }}
 
     {% if icml_file is defined %}
-        <a href="{{ app.request.getBaseURL() }}/{{ icml_file }}">ICML</a>
+        <a href="{{ app.request.getBaseURL() }}/xml/{{ icml_file }}">ICML</a>
         {{ icml_file }}
     {% endif %}
 {% endblock %}
