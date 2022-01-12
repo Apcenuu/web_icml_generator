@@ -30,11 +30,9 @@ class ExcelService
         }, ARRAY_FILTER_USE_BOTH);
         $countFiles = count($files);
 
-        if ($countFiles >= self::MAX_FILES) {
-            foreach ($files as $file) {
-                unlink($directory . '/'. $file);
-            }
+        while ($countFiles >= self::MAX_FILES) {
+            unlink($directory . '/'. array_shift($files));
+            $countFiles = count($files);
         }
-
     }
 }
