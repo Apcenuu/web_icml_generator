@@ -19,19 +19,25 @@ class HomeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+
+            $excelService = new ExcelService();
+
+            $xlsxDir = '../public/xlsx';
+            $excelService->clearDirectory($xlsxDir);
+
             $uploadedFile = $form->get('file')->getData();
             $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
             $safeFilename = $slugger->slug($originalFilename);
             $newFilename = $safeFilename.'-'.uniqid().'.'.$uploadedFile->guessExtension();
+
             $uploadedFile->move(
-                '../public/xlsx',
+                $xlsxDir,
                 $newFilename
             );
 
-            $excelService = new ExcelService();
             $categoryService = new CategoryService();
             $icmlService = new IcmlService($excelService, $categoryService);
-            $icmlName = $icmlService->generateIcml('../public/xlsx/'. $newFilename);
+            $icmlName = $icmlService->generateIcml($xlsxDir . '/'. $newFilename);
 
             return $this->render('upload.html.twig', [
                 'form' => $form->createView(),

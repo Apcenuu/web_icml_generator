@@ -64,8 +64,10 @@ class IcmlService
         }
 
         $resultFile = $this->resultFile();
+        $xmlDir = 'xml/';
+        $this->excelService->clearDirectory($xmlDir);
 
-        $icml = new RetailcrmIcml('MerKomuna', 'xml/' . $resultFile);
+        $icml = new RetailcrmIcml('MerKomuna', $xmlDir . $resultFile);
         $icml->generate($categories, $offers);
 
         return $resultFile;
