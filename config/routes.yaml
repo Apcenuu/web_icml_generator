@@ -1,3 +1,6 @@
 index:
     path: /
     controller: App\Controller\HomeController::index
+template:
+    path: /template.xlsx
+    controller: App\Controller\HomeController::template

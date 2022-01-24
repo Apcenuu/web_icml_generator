@@ -3,8 +3,16 @@
     {{ form_start(form) }}
     {{ form_end(form) }}
 
+    <div>
+        <a href="{{ url('template') }}">Download template</a>
+    </div>
     {% if icml_file is defined %}
-        <a href="{{ app.request.getBaseURL() }}/xml/{{ icml_file }}">ICML</a>
-        {{ icml_file }}
+        <div>
+            <a href="{{ app.request.getBaseURL() }}/xml/{{ icml_file }}">ICML</a>
+        </div>
+        <div>
+            {{ icml_file }}
+        </div>
+
     {% endif %}
 {% endblock %}

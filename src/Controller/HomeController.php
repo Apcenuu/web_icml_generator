@@ -8,10 +8,22 @@ use App\Service\IcmlService;
 use App\Type\FileType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class HomeController extends AbstractController
 {
+    public function template()
+    {
+        $excelService = new ExcelService();
+        $content = $excelService->generateXlsxTemplate();
+
+        return new Response($content, 200, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            "Content-Disposition: attachment; filename=template.xlsx"
+        ]);
+    }
+
     public function index(Request $request, SluggerInterface $slugger)
     {
         $form = $this->createForm(FileType::class);
@@ -30,10 +42,7 @@ class HomeController extends AbstractController
             $safeFilename = $slugger->slug($originalFilename);
             $newFilename = $safeFilename.'-'.uniqid().'.'.$uploadedFile->guessExtension();
 
-            $uploadedFile->move(
-                $xlsxDir,
-                $newFilename
-            );
+            $uploadedFile->move($xlsxDir, $newFilename);
 
             $categoryService = new CategoryService();
             $icmlService = new IcmlService($excelService, $categoryService);

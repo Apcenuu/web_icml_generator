@@ -28,9 +28,8 @@ class IcmlService
         ];
 
         foreach ($rows as $key => $row) {
-            if ($key < 4) continue;
 
-            if ($row[0] == null) continue;
+            if ($this->getPrice($this->getValueFromRow($row,5)) == 0) continue;
 
             foreach ($row as $cellKey => $cell) {
                 if (is_null($cell)) {
@@ -63,7 +62,7 @@ class IcmlService
 
         }
 
-        $resultFile = $this->resultFile();
+        $resultFile = 'MerKomuna';
         $xmlDir = 'xml/';
         $this->excelService->clearDirectory($xmlDir);
 
