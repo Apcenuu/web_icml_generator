@@ -62,7 +62,7 @@ class IcmlService
 
         }
 
-        $resultFile = 'MerKomuna';
+        $resultFile = 'MerKomuna.xml';
         $xmlDir = 'xml/';
         $this->excelService->clearDirectory($xmlDir);
 
