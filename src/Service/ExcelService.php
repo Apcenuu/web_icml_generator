@@ -11,14 +11,31 @@ class ExcelService
 {
     const MAX_FILES = 1;
 
-    public function readFile($filename)
+    public function readXlsxFile($filename)
     {
-        $reader = new Xlsx();
+        $reader      = new Xlsx();
         $spreadsheet = $reader->load($filename);
-        $worksheet = $spreadsheet->getActiveSheet();
-        $rows = $worksheet->toArray();
+        $worksheet   = $spreadsheet->getActiveSheet();
+        $rows        = $worksheet->toArray();
+
         unset($rows[0]);
+
         return $rows;
+    }
+
+    public function readCsvFile($filename)
+    {
+        $csv      = file_get_contents($filename);
+        $rows     = explode(PHP_EOL, $csv);
+        $dataFIle = [];
+
+        foreach ($rows as $row) {
+            $dataFIle[] = explode(';', $row);
+        }
+
+        unset($dataFIle[0]);
+
+        return $dataFIle;
     }
 
     public function clearDirectory($directory)
@@ -26,7 +43,7 @@ class ExcelService
         $files = array_filter(scandir($directory), function ($value, $key) {
             $fileExtensionArray = explode('.', $value);
             $fileExtension = end($fileExtensionArray);
-            if ($fileExtension === 'xlsx' || $fileExtension === 'xml') {
+            if ($fileExtension === 'xlsx' || $fileExtension === 'xml' || $fileExtension === 'txt') {
                 return true;
             }
             return false;

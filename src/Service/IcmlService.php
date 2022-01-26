@@ -8,6 +8,7 @@ class IcmlService
 {
     private ExcelService $excelService;
     private CategoryService $categoryService;
+    private $dataFile;
 
     public function __construct(ExcelService $excelService, CategoryService $categoryService)
     {
@@ -15,9 +16,16 @@ class IcmlService
         $this->categoryService = $categoryService;
     }
 
-    public function generateIcml($fileName)
+    public function readFile($fileName, $isCsvFile = false)
     {
-        $rows = $this->excelService->readFile($fileName);
+        $this->dataFile = $isCsvFile
+            ? $this->excelService->readCsvFile($fileName)
+            : $this->excelService->readXlsxFile($fileName);
+    }
+
+    public function generateIcml($fileName, $isCsvFile = false)
+    {
+        $this->readFile($fileName, $isCsvFile);
 
         $offers = [];
         $categories = [
@@ -27,8 +35,7 @@ class IcmlService
             ]
         ];
 
-        foreach ($rows as $key => $row) {
-
+        foreach ($this->dataFile as $key => $row) {
             if ($this->getPrice($this->getValueFromRow($row,5)) == 0) continue;
 
             foreach ($row as $cellKey => $cell) {

@@ -34,19 +34,25 @@ class HomeController extends AbstractController
 
             $excelService = new ExcelService();
 
-            $xlsxDir = '../public/xlsx';
-            $excelService->clearDirectory($xlsxDir);
+            $filesDir = '../public/files';
+            $excelService->clearDirectory($filesDir);
 
-            $uploadedFile = $form->get('file')->getData();
+            $uploadedFile     = $form->get('file')->getData();
+            $fileType         = explode('.', $uploadedFile->getClientOriginalName())[1];
             $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename.'-'.uniqid().'.'.$uploadedFile->guessExtension();
+            $safeFilename     = $slugger->slug($originalFilename);
+            $newFilename      = $safeFilename.'-'.uniqid().'.'.$uploadedFile->guessExtension();
 
-            $uploadedFile->move($xlsxDir, $newFilename);
+            $uploadedFile->move($filesDir, $newFilename);
 
             $categoryService = new CategoryService();
-            $icmlService = new IcmlService($excelService, $categoryService);
-            $icmlName = $icmlService->generateIcml($xlsxDir . '/'. $newFilename);
+            $icmlService     = new IcmlService($excelService, $categoryService);
+
+            if ($fileType  === 'xlsx' || $fileType === 'xml') {
+                $icmlName = $icmlService->generateIcml($filesDir . '/'. $newFilename);
+            } elseif ($fileType === 'csv') {
+                $icmlName = $icmlService->generateIcml($filesDir . '/'. $newFilename, true);
+            }
 
             return $this->render('upload.html.twig', [
                 'form' => $form->createView(),
