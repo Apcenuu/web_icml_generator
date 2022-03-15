@@ -75,7 +75,7 @@ class RetailcrmIcml
             'weight' => 'Вес',
             'tax' => 'Наценка',
             'size' => 'Размер',
-
+            'description' => 'Описание'
         );
     }
 
@@ -122,6 +122,10 @@ class RetailcrmIcml
             );
 
             $e->setAttribute('id', $category['id']);
+//            if ($category['name'] ===  'Accesorios') {
+//                dump($category['name']);die;
+//            }
+
             $e->appendChild($this->dd->createElement('name', $category['name']));
 
             if (isset($category['picture'])) {
@@ -150,11 +154,16 @@ class RetailcrmIcml
                 $e->setAttribute('quantity', 0);
             }
 
-            foreach ($offer['categoryId'] as $categoryId) {
-                $e->appendChild(
-                    $this->dd->createElement('categoryId', $categoryId)
-                );
+            try {
+                foreach ($offer['categoryId'] as $categoryId) {
+                    $e->appendChild(
+                        $this->dd->createElement('categoryId', $categoryId)
+                    );
+                }
+            } catch (\Exception $exception) {
+                dump($offer['categoryId']);die;
             }
+
 
             $offerKeys = array_keys($offer);
 

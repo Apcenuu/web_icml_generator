@@ -1,6 +1,20 @@
 index:
     path: /
     controller: App\Controller\HomeController::index
+
+download:
+    path: /download
+    controller: App\Controller\HomeController::download
+
+structure:
+    path: /structure
+    controller: App\Controller\HomeController::structure
+
 template:
-    path: /template.xlsx
-    controller: App\Controller\HomeController::template
+    path: /orders
+    controller: App\Controller\HomeController::downloadOrders
+
+
+parse_icml:
+    path: /icml
+    controller: App\Controller\HomeController::icml

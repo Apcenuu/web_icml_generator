@@ -3,9 +3,9 @@
     {{ form_start(form) }}
     {{ form_end(form) }}
 
-    <div>
-        <a href="{{ url('template') }}">Download template</a>
-    </div>
+{#    <div>#}
+{#        <a href="{{ url('template') }}">Download template</a>#}
+{#    </div>#}
     {% if icml_file is defined %}
         <div>
             <a href="{{ app.request.getBaseURL() }}/xml/{{ icml_file }}">ICML</a>
@@ -13,6 +13,26 @@
         <div>
             {{ icml_file }}
         </div>
+
+    {% endif %}
+    {% if headers is defined %}
+        <table>
+            <thead></thead>
+            <tbody>
+                <tr>
+                    {% for key, header in headers %}
+                        <td>[{{ key }}]{{ header }}</td>
+                    {% endfor %}
+                </tr>
+                {% for row in rows %}
+                    <tr>
+                        {% for value in row %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
     {% endif %}
 {% endblock %}
